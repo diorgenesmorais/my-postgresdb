@@ -1,0 +1,30 @@
+services:
+  db-postgres:
+    image: postgres:15
+    ports:
+      - "5435:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      db-network:
+        aliases:
+          - ssdpsqlbase
+    container_name: db-postgres
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+networks:
+  db-network:
+    name: "db-network"
+
+volumes:
+  pg_data:
+    name: "pg_data"
